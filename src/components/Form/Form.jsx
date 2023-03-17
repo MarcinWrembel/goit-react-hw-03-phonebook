@@ -62,6 +62,7 @@ class ContactForm extends Component {
     this.reset();
   };
 
+  //creating DOM elements
   render() {
     const { name, number } = this.state;
     return (
