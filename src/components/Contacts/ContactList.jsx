@@ -1,22 +1,31 @@
-// import { v4 as uuidv4 } from 'uuid';
-
 import { Component } from 'react';
+import css from './ContactList.module.css';
+import PropTypes from 'prop-types';
 
 class ContactList extends Component {
   render() {
-    const { contacts } = this.props;
+    const { contactsFiltered, remove } = this.props;
 
-    const liItems = contacts.map(item => {
+    const liItems = contactsFiltered.map(item => {
       return (
-        <li key={item.id}>
+        <li key={item.id} id={item.id} className={css.contactListItem}>
           {item.name}: {item.number}
-          <button ></button>
+          <button onClick={() => remove(item.id)} className={css.btnDelete}>
+            Delete
+          </button>
         </li>
       );
     });
 
-    return <ul>{liItems}</ul>;
+    return <ul className={css.contactList}>{liItems}</ul>;
   }
 }
+
+ContactList.propTypes = {
+  liItems: PropTypes.array,
+  name: PropTypes.string,
+  id: PropTypes.string,
+  number: PropTypes.string,
+};
 
 export default ContactList;

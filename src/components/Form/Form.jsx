@@ -1,5 +1,10 @@
 import { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { toast } from 'react-toastify';
+import css from './Form.module.css';
+import PropTypes from 'prop-types';
+
+import 'react-toastify/dist/ReactToastify.css';
 
 const INITIAL_STATE = {
   name: '',
@@ -49,13 +54,26 @@ class ContactForm extends Component {
     contacts.forEach(el => {
       if (el.name.toLowerCase() === newContact.name.toLowerCase()) {
         isContact = true;
+        return;
       }
     });
 
     if (!isContact) {
       addContact(newContact);
+    } else {
+      toast.warn('You cannot add the same name twice!', {
+        position: 'top-right',
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: 'colored',
+      });
     }
-    console.log({ ...this.state });
+
+    // console.log({ ...this.state });
     // this.props.onSubmit({ ...this.state });
 
     //clear form
@@ -67,34 +85,46 @@ class ContactForm extends Component {
     const { name, number } = this.state;
     return (
       <div>
-        <form className="contact-form" onSubmit={this.handleSubmit}>
-          <label htmlFor="name">Name</label>
-          <input
-            value={name}
-            onChange={this.handleChange}
-            id="name"
-            type="text"
-            name="name"
-            pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-            required
-          />
-          <label htmlFor="number">Number</label>
-          <input
-            value={number}
-            onChange={this.handleChange}
-            type="tel"
-            id="number"
-            name="number"
-            pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
-            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-            required
-          />
-          <button type="submit">Add contact</button>
+        <form className={css.form} onSubmit={this.handleSubmit}>
+          <label htmlFor="name" className={css.formLabel}>
+            Name
+            <input
+              className={css.formInput}
+              value={name}
+              onChange={this.handleChange}
+              id="name"
+              type="text"
+              name="name"
+              pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
+              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
+              required
+            />
+          </label>
+          <label htmlFor="number" className={css.formLabel}>
+            Number
+            <input
+              className={css.formInput}
+              value={number}
+              onChange={this.handleChange}
+              type="tel"
+              id="number"
+              name="number"
+              pattern="\+?\d{1,4}?[-.\s]?\(?\d{1,3}?\)?[-.\s]?\d{1,4}[-.\s]?\d{1,4}[-.\s]?\d{1,9}"
+              title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+              required
+            />
+          </label>
+          <button type="submit" className={css.btnAdd}>Add contact</button>
         </form>
       </div>
     );
   }
 }
+
+ContactForm.propTypes = {
+  handleChange: PropTypes.func,
+  number: PropTypes.string,
+  name: PropTypes.string,
+};
 
 export default ContactForm;
