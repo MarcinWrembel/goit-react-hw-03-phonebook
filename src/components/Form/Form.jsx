@@ -46,6 +46,8 @@ class ContactForm extends Component {
       number: this.state.number,
     };
 
+
+
     // console.log(newContact);
 
     //check if contact exist in data

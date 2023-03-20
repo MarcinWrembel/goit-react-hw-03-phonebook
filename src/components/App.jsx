@@ -9,15 +9,34 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component {
+  NEW_CONTACT = 'new-contact';
+
   state = {
-    contacts: [
-      { id: 'id-1', name: 'Rosie Simpson', number: '111-11-11' },
-      { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-      { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-      { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-    ],
+    contacts: [],
     filter: '',
   };
+
+//action on application loading
+  componentDidMount() {
+    const lsContacts = localStorage.getItem(this.NEW_CONTACT);
+    const lsParsed = JSON.parse(lsContacts);
+
+    if (lsParsed) {
+      this.setState({ contacts: lsParsed });
+    }
+  }
+
+    //saving data to localStorage
+  componentDidUpdate(prevProps) {
+    
+    if (prevProps.contacts !== this.state.contacts) {
+      //adding new contact to localStorage
+      localStorage.setItem(
+        this.NEW_CONTACT,
+        JSON.stringify(this.state.contacts)
+      );
+    }
+  }
 
   addContact = newContact => {
     this.setState(prevState => ({
